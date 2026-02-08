@@ -1,0 +1,239 @@
+WHAT YOU WILL MAKE
+
+A rectangular holder (frame) for a HEPA filter.
+
+Inner opening (hole): 108.88 mm (X) × 72.20 mm (Z)
+
+Frame depth (Y): 20.00 mm (full-depth hole; no back lip)
+
+Magnet chambers on both sides with a 1.00 mm back cap.
+
+READ THIS FIRST (ONE-TIME PER SESSION)
+
+1) Open FreeCAD 1.0.1.
+
+2) Turn on required panels: View > Panels > check “Combo View” and “Property view”.
+
+3) Units: Edit > Preferences > General > Units > set to “Metric (mm/kg/s)” > OK.
+
+4) Optional: File > Save As… name the file HepaFilter4.FCStd so your work is saved.
+
+OS MULTI-SELECT (YOU WILL NEED THIS)
+
+Windows: hold Ctrl and click to add to a selection.
+
+macOS: hold Command (⌘) and click to add to a selection.
+
+AXES AND CONTROLS (MEMORIZE THIS)
+
+X = Length (left ↔ right)
+
+Y = Depth (front ↔ back)
+
+Z = Height (down ↔ up)
+
+Box data fields: Length → X, Width → Y, Height → Z
+
+Placement > Position moves the object in X, Y, Z (location). It does not change size.
+
+FINAL DIMENSIONS (USE EXACTLY THESE)
+
+OUTER (frame): 118.50 (X) × 82.20 (Z) × 20.00 (Y)
+
+INNER (opening): 108.88 (X) × 72.20 (Z) × 20.00 (Y)
+
+Offsets to center INNER inside OUTER: Position.X = 4.81, Position.Z = 5.00, Position.Y = 0.00
+
+Magnet centers (shared by boss and bore):
+
+• Left:  X = -10.30, Z = 41.10
+
+• Right: X = 128.80, Z = 41.10  (118.50 + 10.30)
+
+Magnet radii and heights:
+
+• Boss (solid) radius = 13.10, Height = 10.00, Position.Y = 10.00
+
+• Bore (hole) radius  = 10.30, Height = 10.00, Position.Y = 9.00 (stops at Y = 19.00 → 1 mm back cap)
+
+Cylinder orientation (both boss and bore): Placement > Rotation: Axis = (1, 0, 0), Angle = −90°
+
+PART 1 — BUILD THE FRAME (OUTER and INNER)
+
+A) Create a new document and switch workbench
+
+1) File > New.
+
+2) View > Workbench > Part.
+
+B) Create OUTER (the outer frame block)
+
+1) Click the blue cube icon (Create a cube solid / Box).
+
+2) In the Model tree, select the new Box (may be named Cube). Press F2, rename to OUTER, press Enter.
+
+3) In Combo View > Data (bottom panel), set size (type value, press Enter):
+
+Length = 118.50
+
+Width  = 20.00   (depth along Y)
+
+Height = 82.20
+
+4) Still in Data > Placement > Position, set location:
+
+X = 0.00, Y = 0.00, Z = 0.00
+
+C) Create INNER (the hole to subtract)
+
+1) Click the blue cube icon again to create another Box.
+
+2) Select it, F2, rename to INNER, Enter.
+
+3) Data (size):
+
+Length = 108.88
+
+Width  = 20.00
+
+Height = 72.20
+
+4) Data > Placement > Position (exact offsets to center it inside OUTER):
+
+X = 4.81
+
+Y = 0.00
+
+Z = 5.00
+
+D) Cut INNER from OUTER (make the hole)
+
+1) In the Model tree, click OUTER once to select it.
+
+2) Add INNER to the selection (Windows: hold Ctrl and click INNER; macOS: hold ⌘ and click INNER). Order matters: OUTER first, INNER second.
+
+3) Top menu: Part > Boolean > Cut. A new object named Cut appears — this is the frame.
+
+4) If a recompute is needed: Edit > Recompute (or Ctrl+R / ⌘R). Hide OUTER and INNER (select them and press Space) so you only see Cut.
+
+PART 2 — ADD MAGNET CHAMBERS (BOSSES) AND DRILL THE BORES
+
+Important: Do all cylinders with the same rotation so their Height runs along +Y.
+
+For each cylinder (boss and bore): Placement > Rotation: Axis = (1, 0, 0), Angle = −90°.
+
+A) Create LEFT boss (solid cylinder)
+
+1) Part toolbar: click Cylinder (gray cylinder icon).
+
+2) With the Cylinder selected, Combo View > Data > Cylinder:
+
+Radius = 13.10
+
+Height = 10.00
+
+3) Combo View > Data > Placement:
+
+Rotation: Axis (1,0,0), Angle −90°
+
+Position: X = -10.30, Y = 10.00, Z = 41.10
+
+B) Create RIGHT boss (solid cylinder)
+
+Duplicate the LEFT boss or create a new Cylinder with the same radius, height, and rotation.
+
+Set Placement > Position: X = 128.80, Y = 10.00, Z = 41.10
+
+C) Fuse bosses with the frame
+
+1) Select the frame (Cut) first.
+
+2) Add both boss cylinders to the selection (multi-select).
+
+3) Part > Boolean > Union (Fuse). The result is your frame with bosses added.
+
+D) Create LEFT bore (hole cylinder)
+
+1) Create a new Cylinder.
+
+2) Combo View > Data > Cylinder:
+
+Radius = 10.30
+
+Height = 10.00
+
+3) Placement:
+
+Rotation: Axis (1,0,0), Angle −90°
+
+Position: X = -10.30, Y = 9.00, Z = 41.10
+
+E) Create RIGHT bore (hole cylinder)
+
+Duplicate LEFT bore and set Position: X = 128.80, Y = 9.00, Z = 41.10
+
+F) Cut the bores through the fused frame
+
+1) Select the fused frame (from step C).
+
+2) Add the LEFT bore to selection. Part > Boolean > Cut.
+
+3) Select the new result. Add the RIGHT bore. Part > Boolean > Cut.
+
+PART 3 — EXPORT TO STL
+
+1) In the Model tree, click the final object (latest Cut) to select it.
+
+2) File > Export…
+
+3) In the format dropdown, choose “STL Mesh (*.stl)”.
+
+4) Name your file and click Save.
+
+SANITY CHECKS (DO THESE)
+
+Outer frame (X × Z × Y): 118.50 × 82.20 × 20.00
+
+Inner opening (X × Z): 108.88 × 72.20
+
+Surround thickness:
+
+• X sides: (118.50 − 108.88) / 2 = 4.81 mm
+
+• Z sides: (82.20 − 72.20) / 2 = 5.00 mm
+
+Cylinders orientation: both set to Rotation Axis (1,0,0), Angle −90°
+
+Boss cylinders: Radius 13.10, Height = 10.00, Position.Y 10.00
+
+Bore cylinders: Radius 10.30, Height = 10.00, Position.Y 9.00 (stops at Y = 19.00)
+
+Magnet centers (X,Z): Left (-10.30, 41.10), Right (128.80, 41.10)
+
+COMMON MISTAKES (AND FIXES)
+
+Wrong object selected (values won’t stick): Click the object (OUTER, INNER, Cylinder) first. Then type the value and press Enter.
+
+Hole disappears or looks solid: Ensure the Boolean is OUTER minus INNER and that INNER overlaps OUTER (Position.X = 4.81, Position.Z = 5.00).
+
+Cylinders look tilted or the wall looks uneven: Set Rotation Axis (1,0,0), Angle −90° for both boss and bore, and ensure boss/bore share the exact same X and Z.
+
+Boolean tools are greyed out: Make sure you’re in the Part workbench and two solids are selected in the correct order.
+
+Geometry errors: Edit > Recompute. If still broken, delete the Fuse/Cut that shows an error and redo that Boolean step.
+
+PRINTING TIP
+
+Print the frame flat so the 20.00 mm dimension is the build height (Y). Add a small chamfer to the inner opening in your slicer if you want easier insertion.
+
+YOU ARE DONE
+
+You made a 20 mm-deep holder with an opening 108.88 × 72.20, side magnet chambers with a 1.00 mm back cap, and consistent wall thickness. Save your file now.
+
+CHANGE SUMMARY
+
+Bore radius increased from 10.10 mm to 10.30 mm for better magnet clearance.
+
+Magnet centers moved to be tangent to the outer frame (X=-10.30 and X=128.80) for full circular access.
+
+Boss and Bore positions updated throughout the instructions to reflect these changes.
